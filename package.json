@@ -1,0 +1,47 @@
+{
+  "name": "@v0idd0/dotdig",
+  "version": "1.0.0",
+  "description": "dotdig \u2014 DNS lookup CLI with diff mode: compare records across resolvers, watch for propagation, detect inconsistencies. A/AAAA/MX/TXT/CNAME/NS/SOA. Free forever from v\u00f8iddo.",
+  "main": "src/index.js",
+  "type": "module",
+  "bin": {
+    "dotdig": "./bin/dotdig.js"
+  },
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "dns",
+    "dig",
+    "resolver",
+    "domain",
+    "records",
+    "cli",
+    "devops",
+    "developer-tools",
+    "voiddo"
+  ],
+  "author": "v\u00f8iddo <support@voiddo.com> (https://voiddo.com)",
+  "license": "MIT",
+  "homepage": "https://tools.voiddo.com/dotdig/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voidd0/dotdig.git"
+  },
+  "bugs": {
+    "url": "https://github.com/voidd0/dotdig/issues",
+    "email": "support@voiddo.com"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE"
+  ]
+}
