@@ -17,7 +17,7 @@ NS     mike.ns.cloudflare.com
 ## Install
 
 ```bash
-npm install -g rtfm-dotdig
+npm install -g @v0idd0/dotdig
 ```
 
 ## Usage
@@ -67,7 +67,7 @@ dotdig _ssh._tcp.example.com --types SRV
 ## Programmatic API
 
 ```javascript
-import { lookup, format } from 'rtfm-dotdig';
+import { lookup, format } from '@v0idd0/dotdig';
 
 const results = await lookup('example.com', {
   types: ['A', 'MX'],
@@ -80,3 +80,7 @@ console.log(format('example.com', results));
 ## License
 
 MIT — part of the [vøiddo](https://voiddo.com) tools collection.
+
+---
+
+Built by [vøiddo](https://voiddo.com/) — a small studio shipping AI-flavoured products, free dev tools, Chrome extensions and weird browser games.
