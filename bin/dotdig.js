@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { readFileSync as __readPkgVersion } from 'node:fs';
+if (process.argv[2] === '--version' || process.argv[2] === '-V') { console.log(JSON.parse(__readPkgVersion(new URL('../package.json', import.meta.url), 'utf8')).version); process.exit(0); }
 import { lookup, format, RESOLVERS, TYPES } from '../src/index.js';
 
 const args = process.argv.slice(2);

@@ -1,7 +1,7 @@
 {
   "name": "@v0idd0/dotdig",
-  "version": "1.0.1",
-  "description": "dotdig — DNS lookup CLI with diff mode: compare records across resolvers, watch for propagation, detect inconsistencies. A/AAAA/MX/TXT/CNAME/NS/SOA. Free forever from vøiddo.",
+  "version": "1.0.2",
+  "description": "DNS lookup CLI. Queries A, AAAA, MX, TXT, NS, CNAME, SOA, PTR, SRV and CAA records, optionally through a chosen public resolver, with JSON output.",
   "main": "src/index.js",
   "type": "module",
   "bin": {
@@ -16,10 +16,10 @@
     "resolver",
     "domain",
     "records",
+    "nslookup",
     "cli",
     "devops",
-    "developer-tools",
-    "voiddo"
+    "developer-tools"
   ],
   "author": "vøiddo <support@voiddo.com> (https://voiddo.com)",
   "license": "MIT",

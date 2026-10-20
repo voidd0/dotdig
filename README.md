@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-A0573A.svg)](LICENSE)
 [![Node ≥14](https://img.shields.io/badge/node-%E2%89%A514-1F1A14)](package.json)
 
-DNS lookup for humans — formatted output, no flag soup.
+DNS lookup for humans: formatted output, no flag soup.
 
 ```
 $ dotdig voiddo.com
@@ -21,7 +21,7 @@ NS     mike.ns.cloudflare.com
 
 ## Why dotdig
 
-You're debugging a DNS issue at 11pm. `dig +short example.com` shows nothing — fine for scripts but useless for triage. `dig example.com` dumps half a screen of headers and authority sections. You don't need 80% of that. You need: A records, AAAA, MX, TXT, NS — aligned, sorted, with sensible defaults. dotdig is the same `dig` you already trust, formatted like a human is reading it.
+You're debugging a DNS issue at 11pm. `dig +short example.com` shows nothing, fine for scripts but useless for triage. `dig example.com` dumps half a screen of headers and authority sections. You don't need 80% of that. You need: A records, AAAA, MX, TXT, NS, aligned, sorted, with sensible defaults. dotdig is the same `dig` you already trust, formatted like a human is reading it.
 
 ## Install
 
@@ -32,7 +32,7 @@ npm install -g @v0idd0/dotdig
 ## Usage
 
 ```bash
-# Basic — A, AAAA, MX, TXT, NS
+# Basic: A, AAAA, MX, TXT, NS
 dotdig example.com
 
 # Specific record types
@@ -86,7 +86,7 @@ For automation pipelines `dig +short` remains the right answer (one record, fewe
 
 **Does it support DoH / DoT?** Out of the box, no. `--via 1.1.1.1` uses standard UDP/53 + TCP/53 fallback. If your resolver-of-choice is behind DoH, `dnsutils` is the right tool.
 
-**Why does `--all` skip some types?** It includes the ones we have parsers for. RRSIG, NSEC, DS, etc. are intentionally not surfaced — those are zone-signing internals, not what you're debugging at 11pm.
+**Why does `--all` skip some types?** It includes the ones we have parsers for. RRSIG, NSEC, DS, etc. are intentionally not surfaced, those are zone-signing internals, not what you're debugging at 11pm.
 
 **Negative results?** dotdig prints `(no records)` for asked types that came back empty. Exit code is `0` either way unless the resolver itself fails.
 
@@ -105,21 +105,9 @@ console.log(format('example.com', results));
 
 ## Triage shortcuts
 
-- **Resolver mismatch?** Run dotdig twice with `--via cloudflare` and `--via google` and `diff` the JSON. If they differ, you're caught between recursive resolvers with stale caches — usually means a recent zone change is still propagating.
-- **MX troubleshooting.** Pair `dotdig example.com --types MX,TXT` with the SPF/DMARC TXT records for the same domain — most "email not delivering" tickets resolve at this single column-aligned snapshot.
+- **Resolver mismatch?** Run dotdig twice with `--via cloudflare` and `--via google` and `diff` the JSON. If they differ, you're caught between recursive resolvers with stale caches, usually means a recent zone change is still propagating.
+- **MX troubleshooting.** Pair `dotdig example.com --types MX,TXT` with the SPF/DMARC TXT records for the same domain, most "email not delivering" tickets resolve at this single column-aligned snapshot.
 - **Reverse lookup.** Use `dotdig 8.8.8.8 --types PTR` (with explicit `in-addr.arpa`-style names handled internally). Useful when a log line shows an IP and you want a hostname for it without leaving the terminal.
-
-## More from the studio
-
-This is one tool out of many — see [`from-the-studio.md`](from-the-studio.md) for the full lineup of vøiddo products (other CLI tools, browser extensions, the studio's flagship products and games).
-
-## From the same studio
-
-- **[@v0idd0/jsonyo](https://www.npmjs.com/package/@v0idd0/jsonyo)** — JSON swiss army knife, 18 commands, zero limits
-- **[@v0idd0/envguard](https://www.npmjs.com/package/@v0idd0/envguard)** — stop shipping `.env` drift to staging
-- **[@v0idd0/depcheck](https://www.npmjs.com/package/@v0idd0/depcheck)** — find unused dependencies in one command
-- **[@v0idd0/gitstats](https://www.npmjs.com/package/@v0idd0/gitstats)** — git repo analytics, one command
-- **[View all tools →](https://voiddo.com/tools/)**
 
 ## License
 
@@ -127,4 +115,4 @@ MIT.
 
 ---
 
-Built by [vøiddo](https://voiddo.com/) — a small studio shipping AI-flavoured products, free dev tools, Chrome extensions and weird browser games.
+Maintained by v0idd0.
