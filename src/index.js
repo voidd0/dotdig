@@ -1,9 +1,3 @@
-// dotdig — dns lookup for humans.
-//
-// Wraps node:dns/promises with a uniform output shape. Supports A, AAAA, MX,
-// TXT, NS, CNAME, SOA, PTR, SRV, CAA. Custom resolvers via Resolver instance.
-// Zero deps.
-
 import { Resolver } from 'node:dns/promises';
 
 export const TYPES = ['A', 'AAAA', 'MX', 'TXT', 'NS', 'CNAME', 'SOA', 'PTR', 'SRV', 'CAA'];

@@ -1,7 +1,7 @@
 {
   "name": "@v0idd0/dotdig",
-  "version": "1.0.2",
-  "description": "DNS lookup CLI. Queries A, AAAA, MX, TXT, NS, CNAME, SOA, PTR, SRV and CAA records, optionally through a chosen public resolver, with JSON output.",
+  "version": "1.0.3",
+  "description": "DNS lookup command. Queries A, AAAA, MX, TXT, NS, CNAME, SOA, PTR, SRV and CAA records, optionally through a public resolver, with JSON output.",
   "main": "src/index.js",
   "type": "module",
   "bin": {
@@ -15,42 +15,37 @@
     "dig",
     "resolver",
     "domain",
-    "records",
+    "dns-records",
     "nslookup",
-    "cli",
-    "devops",
-    "developer-tools"
+    "mx",
+    "txt",
+    "cli"
   ],
   "author": "vøiddo <support@voiddo.com> (https://voiddo.com)",
   "license": "MIT",
-  "homepage": "https://tools.voiddo.com/dotdig/",
+  "homepage": "https://voiddo.com/packages/#dotdig",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/voidd0/dotdig.git"
   },
   "bugs": {
-    "url": "https://github.com/voidd0/dotdig/issues",
-    "email": "support@voiddo.com"
+    "url": "https://github.com/voidd0/dotdig/issues"
   },
   "publishConfig": {
     "access": "public"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=18"
   },
   "files": [
-    "bin/",
-    "src/",
-    "LICENSE",
-    "README.md"
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE"
   ],
   "os": [
     "darwin",
     "linux",
     "win32"
-  ],
-  "funding": {
-    "type": "individual",
-    "url": "https://voiddo.com/contact/"
-  }
+  ]
 }

@@ -1,27 +1,10 @@
 # dotdig
 
-[![npm version](https://img.shields.io/npm/v/@v0idd0/dotdig.svg?color=A0573A)](https://www.npmjs.com/package/@v0idd0/dotdig)
-[![npm downloads](https://img.shields.io/npm/dw/@v0idd0/dotdig.svg?color=1F1A14)](https://www.npmjs.com/package/@v0idd0/dotdig)
-[![License: MIT](https://img.shields.io/badge/license-MIT-A0573A.svg)](LICENSE)
-[![Node ≥14](https://img.shields.io/badge/node-%E2%89%A514-1F1A14)](package.json)
+Looks up DNS records from the command line, with a choice of public resolver and JSON output. Use it to check an A, MX or TXT record without dig installed.
 
-DNS lookup for humans: formatted output, no flag soup.
-
-```
-$ dotdig voiddo.com
-dotdig: voiddo.com
-A      104.21.x.x
-A      172.67.x.x
-AAAA   2606:4700::6810:xxxx
-MX        10  mx1.improvmx.com
-TXT    "v=spf1 include:_spf.improvmx.com ~all"
-NS     dahlia.ns.cloudflare.com
-NS     mike.ns.cloudflare.com
-```
-
-## Why dotdig
-
-You're debugging a DNS issue at 11pm. `dig +short example.com` shows nothing, fine for scripts but useless for triage. `dig example.com` dumps half a screen of headers and authority sections. You don't need 80% of that. You need: A records, AAAA, MX, TXT, NS, aligned, sorted, with sensible defaults. dotdig is the same `dig` you already trust, formatted like a human is reading it.
+[![npm](https://img.shields.io/npm/v/@v0idd0/dotdig?color=00f6d0&labelColor=050914)](https://www.npmjs.com/package/@v0idd0/dotdig)
+[![test](https://github.com/voidd0/dotdig/actions/workflows/test.yml/badge.svg)](https://github.com/voidd0/dotdig/actions/workflows/test.yml)
+[![license](https://img.shields.io/badge/license-MIT-00f6d0?labelColor=050914)](LICENSE)
 
 ## Install
 
@@ -29,90 +12,64 @@ You're debugging a DNS issue at 11pm. `dig +short example.com` shows nothing, fi
 npm install -g @v0idd0/dotdig
 ```
 
+Or run it once without installing: `npx @v0idd0/dotdig --help`. Needs Node.js 18 or newer. No dependencies.
+
+## Example
+
+Look up the A and MX records of example.com. Output from a real run on 2026-11-26:
+
+```console
+$ dotdig example.com --types A,MX
+dotdig: example.com
+A      104.20.23.154
+A      172.66.147.243
+MX        0  
+```
+
+Ask a public resolver for TXT records:
+
+```console
+$ dotdig example.com --types TXT --via cloudflare
+dotdig: example.com
+TXT    "v=spf1 -all"
+TXT    "_k2n1y4vw3qtb4skdx9e7dxt97qrmmq9"
+```
+
 ## Usage
 
-```bash
-# Basic: A, AAAA, MX, TXT, NS
-dotdig example.com
+```text
+dotdig: DNS lookup
 
-# Specific record types
-dotdig example.com --types A,AAAA
+Usage:
+  dotdig <host>                       A, AAAA, MX, TXT and NS records
+  dotdig <host> --types A,AAAA,MX     chosen record types
+  dotdig <host> --all                 every supported type
+  dotdig <host> --via cloudflare      ask a public resolver
+  dotdig <host> --via 1.1.1.1         ask a resolver by IP
+  dotdig --json <host>                print JSON
+  dotdig -V, --version                print the version
+  dotdig -h, --help                   show this help
 
-# All record types we know
-dotdig example.com --all
+Types: A, AAAA, MX, TXT, NS, CNAME, SOA, PTR, SRV, CAA
+Resolvers: cloudflare, google, quad9, opendns, or one or more IPs separated by commas
 
-# Use a public resolver
-dotdig example.com --via cloudflare
-dotdig example.com --via google
-dotdig example.com --via quad9
+Examples:
+  dotdig example.com
+  dotdig example.com --types MX,TXT --via cloudflare
+  dotdig _ssh._tcp.example.com --types SRV
 
-# Custom resolver IP
-dotdig example.com --via 1.1.1.1
-
-# JSON for piping
-dotdig --json example.com | jq '.results[] | select(.type == "MX")'
-
-# SRV records
-dotdig _ssh._tcp.example.com --types SRV
+Docs and issues: https://github.com/voidd0/dotdig
 ```
 
-## Supported types
+## Notes
 
-`A`, `AAAA`, `MX`, `TXT`, `NS`, `CNAME`, `SOA`, `PTR`, `SRV`, `CAA`.
-
-## Public resolvers
-
-| Alias | IPs |
-|---|---|
-| `cloudflare` | 1.1.1.1, 1.0.0.1 |
-| `google` | 8.8.8.8, 8.8.4.4 |
-| `quad9` | 9.9.9.9, 149.112.112.112 |
-| `opendns` | 208.67.222.222, 208.67.220.220 |
-
-## Compared to alternatives
-
-| tool | output legibility | resolver picker | JSON | install |
-|---|---|---|---|---|
-| dotdig | aligned columns, sensible defaults | yes (`--via cloudflare`) | yes | one npm install |
-| `dig +short` | one IP per line | yes (`@1.1.1.1`) | no | bundled |
-| `dig` (full) | verbose, RFC-shaped | yes | no | bundled |
-| `host`/`nslookup` | terse, no MX details | sometimes | no | bundled |
-
-For automation pipelines `dig +short` remains the right answer (one record, fewer characters to parse). For interactive triage on a host you're paged into, dotdig saves a screen-worth of squinting.
-
-## FAQ
-
-**Why not just `dig +short`?** It strips too much. You lose record type, MX priority, TXT quoting. Fine for "give me an IP", useless when the bug is in the TXT layer.
-
-**Does it support DoH / DoT?** Out of the box, no. `--via 1.1.1.1` uses standard UDP/53 + TCP/53 fallback. If your resolver-of-choice is behind DoH, `dnsutils` is the right tool.
-
-**Why does `--all` skip some types?** It includes the ones we have parsers for. RRSIG, NSEC, DS, etc. are intentionally not surfaced, those are zone-signing internals, not what you're debugging at 11pm.
-
-**Negative results?** dotdig prints `(no records)` for asked types that came back empty. Exit code is `0` either way unless the resolver itself fails.
-
-## Programmatic API
-
-```javascript
-import { lookup, format } from '@v0idd0/dotdig';
-
-const results = await lookup('example.com', {
-  types: ['A', 'MX'],
-  resolvers: ['1.1.1.1'],
-});
-
-console.log(format('example.com', results));
-```
-
-## Triage shortcuts
-
-- **Resolver mismatch?** Run dotdig twice with `--via cloudflare` and `--via google` and `diff` the JSON. If they differ, you're caught between recursive resolvers with stale caches, usually means a recent zone change is still propagating.
-- **MX troubleshooting.** Pair `dotdig example.com --types MX,TXT` with the SPF/DMARC TXT records for the same domain, most "email not delivering" tickets resolve at this single column-aligned snapshot.
-- **Reverse lookup.** Use `dotdig 8.8.8.8 --types PTR` (with explicit `in-addr.arpa`-style names handled internally). Useful when a log line shows an IP and you want a hostname for it without leaving the terminal.
+Answers come from the resolver your system uses unless you pass `--via`. Live DNS data changes, so your output will not match the example above.
 
 ## License
 
-MIT.
+MIT, see [LICENSE](LICENSE).
 
 ---
 
-Maintained by v0idd0.
+Made by [vøiddo](https://voiddo.com/?src=gh). More command line tools: [voiddo.com/packages](https://voiddo.com/packages/?src=gh).
+We also run data scrapers for job boards, shops and ad libraries: [voiddo.com/scrapers](https://voiddo.com/scrapers/?src=gh).

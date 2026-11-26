@@ -6,26 +6,27 @@ import { lookup, format, RESOLVERS, TYPES } from '../src/index.js';
 const args = process.argv.slice(2);
 
 function help() {
-  console.log(`
-dotdig — dns lookup for humans.
+  console.log(`dotdig: DNS lookup
 
-  dotdig <host>                       a + aaaa + mx + txt + ns
-  dotdig <host> --types A,AAAA,MX     specific types
-  dotdig <host> --all                 all supported types
-  dotdig <host> --via cloudflare      use a public resolver
-  dotdig <host> --via 1.1.1.1         use a custom resolver ip
-  dotdig --json <host>                json output
-  dotdig -h, --help                   show this
+Usage:
+  dotdig <host>                       A, AAAA, MX, TXT and NS records
+  dotdig <host> --types A,AAAA,MX     chosen record types
+  dotdig <host> --all                 every supported type
+  dotdig <host> --via cloudflare      ask a public resolver
+  dotdig <host> --via 1.1.1.1         ask a resolver by IP
+  dotdig --json <host>                print JSON
+  dotdig -V, --version                print the version
+  dotdig -h, --help                   show this help
 
-types: ${TYPES.join(', ')}
+Types: ${TYPES.join(', ')}
+Resolvers: cloudflare, google, quad9, opendns, or one or more IPs separated by commas
 
-resolvers: cloudflare, google, quad9, opendns, or any ip[,ip]
-
-examples:
-  dotdig voiddo.com
-  dotdig voiddo.com --all --via cloudflare
+Examples:
+  dotdig example.com
+  dotdig example.com --types MX,TXT --via cloudflare
   dotdig _ssh._tcp.example.com --types SRV
-`);
+
+Docs and issues: https://github.com/voidd0/dotdig`);
 }
 
 if (args.length === 0 || args.includes('-h') || args.includes('--help')) {
