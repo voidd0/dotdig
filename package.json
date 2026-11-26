@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "type": "module",
   "bin": {
-    "dotdig": "./bin/dotdig.js"
+    "dotdig": "bin/dotdig.js"
   },
   "scripts": {
     "test": "node test.js"
